@@ -1,7 +1,7 @@
 from myrequest import myrequests
 
 
-class getresouces(myrequests.myrequests):
+class GetResources(myrequests.myrequests):
 
     def __init__(self, url, method="GET", **kwargs):
         super().__init__(method=method, url=url, **kwargs)
@@ -29,8 +29,10 @@ class getresouces(myrequests.myrequests):
             print("输入错误")
 
 if __name__ == "__main__":
-    test = getresouces(url="http://43.227.254.58:8093/code/systemPropertyResources/resourcesCode/table?resourcesCode"
-                           "=CheckEquResume", headers={"token": "a39ab5820ad9423aa702f2f3aec30f28"})
+    test = GetResources(url="http://192.168.1.96:8092/code/systemPropertyResources/resourcesCode?resourcesCode=issuedPlanDN&allocationTag=0&dictName=data_group", headers={"token": "2100000000000000"})
     #print(test.getresponse())
-    print(test.getcustomName())
-    test.search_sourceItem(test="配属单位")
+    #print(test.getcustomName())
+    #test.search_sourceItem(test="配属单位")
+    print(test.run())
+    test.getcustomName()
+    test.search_sourceItem(customName="公里标")
