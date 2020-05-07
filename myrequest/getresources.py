@@ -3,7 +3,7 @@ from myrequest.myerror import ResponseError
 
 
 class GetResources(myrequests.myrequests):
-
+    #home分支提交代码
     def __init__(self, resourcesCode, **kwargs):
         self.params = {"allocationTag": "0", "dictName": "data_group", "resourcesCode": resourcesCode}
         self.resourcesCode = resourcesCode
