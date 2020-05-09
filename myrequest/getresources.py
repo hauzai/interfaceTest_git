@@ -1,8 +1,11 @@
+from typing import Dict, Any, Union
+
 from myrequest import myrequests
 from myrequest.myerror import ResponseError
 
 
 class GetResources(myrequests.myrequests):
+
     # home分支提交代码
     def __init__(self, resourcesCode, **kwargs):
         # 固定查询条件
@@ -18,20 +21,24 @@ class GetResources(myrequests.myrequests):
         self.data = None
         # 调用父类初始化方法
         super().__init__(url=self.url, **self.kwargs)
+
     def get_response(self):
         return self.response.json()
+
     # 获取id-自定义名称-名称-资源
     def get_name(self):
         # self.data = self.response.json()["data"]
         for i in self.data:
             print(i["id"] + " - " + i["customName"] + "-" + i["name"] + " - " + i["resource"])
-    # 获取各字段 new - edit - detail status
+
+    # 获取各状态字段 new - edit - detail status
 
     def get_status(self):
         print("id-customName:newStatus-editStatus-detailStatus")
         for i in self.data:
             # TODO 使用dict转换此处的数字和dictItem
-            print(i['id'] + '-' + i['customName'] + ':' + str(i["newStatus"]) + '-' + str(i["editStatus"]) + '-' + str(i["detailStatus"]))
+            print(i['id'] + '-' + i['customName'] + ':' + str(i["newStatus"]) + '-' + str(i["editStatus"]) + '-' + str(
+                i["detailStatus"]))
 
     def search_sourceItem(self, **kwargs):
         if len(kwargs) != 1:
