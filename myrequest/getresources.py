@@ -1,26 +1,28 @@
 from typing import Dict, Any, Union
 
 from myrequest import myrequests
+from util import config, getdictitem
 from myrequest.myerror import ResponseError
 
 
 class GetResources(myrequests.myrequests):
 
     # home分支提交代码
-    def __init__(self, resourcesCode, **kwargs):
+    def __init__(self, environment, resourcescode, **kwargs):
         # 固定查询条件
-        self.__params = {"allocationTag": "0", "dictName": "data_group", "resourcesCode": resourcesCode}
+        self.__params = {"allocationTag": "0", "dictName": "data_group", "resourcesCode": resourcescode}
         # 固定接口名称
         self.__interface = "/code/systemPropertyResources/resourcesCode"
-        self.resourcesCode = resourcesCode
+        self.resourcesCode = resourcescode
         self.kwargs = kwargs
         self.kwargs["params"] = self.__params
-        # TODO 使用配置拼接url
-        self.url = "http://192.168.1.96:8092" + self.__interface
+        # DO 使用配置拼接url
+        self.url = config.get_url(str(environment)) + self.__interface
         # data为查询到data数组
         self.data = None
         # 调用父类初始化方法
         super().__init__(url=self.url, **self.kwargs)
+        self.run()
 
     def get_response(self):
         return self.response.json()
@@ -36,9 +38,12 @@ class GetResources(myrequests.myrequests):
     def get_status(self):
         print("id-customName:newStatus-editStatus-detailStatus")
         for i in self.data:
-            # TODO 使用dict转换此处的数字和dictItem
-            print(i['id'] + '-' + i['customName'] + ':' + str(i["newStatus"]) + '-' + str(i["editStatus"]) + '-' + str(
-                i["detailStatus"]))
+            # DO 使用dict转换此处的数字和dictItem
+            print(i['id'] + '-' + i['customName'] + ':' + getdictitem.get_dictitem4config("newStatus",
+                                                                                          str(i['newStatus']))
+                  + '-' + getdictitem.get_dictitem4config("editStatus",
+                                                          str(i["editStatus"])) + '-' + getdictitem.get_dictitem4config(
+                "detailStatus", str(i["detailStatus"])))
 
     def search_sourceItem(self, **kwargs):
         if len(kwargs) != 1:
@@ -62,16 +67,6 @@ class GetResources(myrequests.myrequests):
 
 
 if __name__ == "__main__":
-    test = GetResources(resourcesCode="issuedPlanDN", headers={"token": "2100000000000000"})
-    # print(test.getresponse())
-    # print(test.getcustomName())
-    # test.search_sourceItem(test="配属单位")
-    # print(test.run())
-    # test.getcustomName()
-    # test.search_sourceItem(customName="公里标")
-    # print(test)
-    test.run()
-    # print(test.data)
-    # test.search_sourceItem(id="12fdc9787ac445f8b4970b7e67a487ae")
-    # test.get_name()
+    test = GetResources(environment=96, resourcescode="issuedPlanDN", headers={"token": "2100000000000000"})
+  #  test.run()
     test.get_status()
